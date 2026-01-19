@@ -6,6 +6,8 @@
   <title>Sorry Bubu 💛</title>
 
   <style>
+    *{ box-sizing: border-box; }
+
     body{
       margin:0;
       font-family: "Segoe UI", Arial, sans-serif;
@@ -14,19 +16,19 @@
       align-items:center;
       justify-content:center;
       min-height:100vh;
-      padding:20px;
+      padding:16px;
     }
 
     .card{
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.97);
+      width: 100%;
       max-width: 520px;
-      width:100%;
-      padding: 32px;
+      padding: 26px 20px;
       border-radius: 22px;
       text-align:center;
       box-shadow: 0 10px 35px rgba(0,0,0,0.18);
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
 
     .badge{
@@ -37,13 +39,13 @@
       border-radius: 999px;
       font-weight: 700;
       font-size: 13px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     h1{
       color:#d97706;
       margin: 6px 0 12px;
-      font-size: 32px;
+      font-size: 30px;
     }
 
     p{
@@ -51,6 +53,20 @@
       color:#333;
       line-height:1.7;
       margin: 0;
+    }
+
+    .sadEmoji{
+      font-size: 34px;
+      margin: 10px 0 6px;
+      animation: sadShake 1.2s ease-in-out infinite;
+    }
+
+    @keyframes sadShake{
+      0%{ transform: rotate(0deg); }
+      25%{ transform: rotate(-4deg); }
+      50%{ transform: rotate(4deg); }
+      75%{ transform: rotate(-2deg); }
+      100%{ transform: rotate(0deg); }
     }
 
     .heart{
@@ -67,10 +83,10 @@
     }
 
     .buttons{
-      margin-top: 22px;
+      margin-top: 18px;
       display:flex;
       justify-content:center;
-      gap:14px;
+      gap:12px;
       flex-wrap:wrap;
     }
 
@@ -80,9 +96,10 @@
       border-radius: 14px;
       cursor:pointer;
       font-size: 16px;
-      transition: 0.2s ease;
-      font-weight: 600;
-      min-width: 140px;
+      font-weight: 700;
+      transition: transform 0.15s ease;
+      min-width: 145px;
+      touch-action: manipulation;
     }
 
     .yes{
@@ -91,22 +108,28 @@
       box-shadow: 0 6px 14px rgba(245,158,11,0.35);
     }
 
-    .yes:hover{
-      transform: scale(1.05);
+    .yes:active{ transform: scale(0.98); }
+
+    .noWrap{
+      position: relative;
+      width: 145px;
+      height: 46px;
     }
 
     .no{
       background:#374151;
       color:white;
-      position:relative;
+      position:absolute;
+      left:0;
+      top:0;
+      width: 145px;
+      height: 46px;
     }
 
-    .no:hover{
-      transform: scale(1.05);
-    }
+    .no:active{ transform: scale(0.98); }
 
     .footer{
-      margin-top:18px;
+      margin-top:16px;
       font-size: 13px;
       color:#555;
     }
@@ -114,7 +137,35 @@
     .tiny{
       font-size: 12px;
       color:#777;
-      margin-top:10px;
+      margin-top:6px;
+    }
+
+    /* Bouncing hearts animation after YES */
+    .heartRain{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .floatingHeart{
+      position: absolute;
+      bottom: -20px;
+      font-size: 22px;
+      animation: floatUp 2.5s linear forwards;
+      opacity: 0.9;
+    }
+
+    @keyframes floatUp{
+      0%{
+        transform: translateY(0) scale(1);
+        opacity: 0.9;
+      }
+      100%{
+        transform: translateY(-110vh) scale(1.4);
+        opacity: 0;
+      }
     }
   </style>
 </head>
@@ -124,9 +175,11 @@
     <div class="badge">For my Bubu 💛</div>
     <h1>Sorry Aachal 🥺</h1>
 
+    <div class="sadEmoji">😔🥺</div>
+
     <p>
       Hey <b>Aachal (Bubu)</b> 💛<br><br>
-      I know you were calling me and I didn’t pick up...<br>
+      I know you were calling me and I couldn’t pick up...<br>
       I’m really sorry for that 😔<br><br>
       I never ignore you on purpose.<br>
       You mean a lot to me and your call is important to me always 💛
@@ -141,7 +194,10 @@
 
     <div class="buttons">
       <button class="yes" onclick="forgive()">Yes Bubu 💛</button>
-      <button class="no" id="noBtn" onmouseover="moveNo()">No 😠</button>
+
+      <div class="noWrap">
+        <button class="no" id="noBtn">No 😠</button>
+      </div>
     </div>
 
     <div class="footer">
@@ -150,27 +206,62 @@
     </div>
   </div>
 
+  <div class="heartRain" id="heartRain"></div>
+
   <script>
+    // Mobile-friendly "No" button move (on click/touch)
+    const noBtn = document.getElementById("noBtn");
+
+    function moveNo(){
+      const maxX = 80;
+      const maxY = 60;
+      const x = Math.random() * (maxX * 2) - maxX;
+      const y = Math.random() * (maxY * 2) - maxY;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    noBtn.addEventListener("click", moveNo);
+    noBtn.addEventListener("touchstart", moveNo);
+
+    // Heart rain after YES
+    function startHearts(){
+      const container = document.getElementById("heartRain");
+      let count = 0;
+
+      const interval = setInterval(() => {
+        count++;
+        const heart = document.createElement("div");
+        heart.className = "floatingHeart";
+        heart.textContent = "💛";
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (18 + Math.random() * 18) + "px";
+
+        container.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 2600);
+
+        if(count > 35) clearInterval(interval);
+      }, 80);
+    }
+
     function forgive(){
+      startHearts();
+
       document.getElementById("card").innerHTML = `
         <div class="badge">Best Girlfriend 💛</div>
         <h1>Yayyy Bubu 😍💛</h1>
+
         <p style="font-size:16px; line-height:1.7; color:#333;">
           Thank you for forgiving me 🥺💛<br><br>
           I promise from now I will pick your call fast 📞✨<br>
-          And I’ll give you extra attention today 😄<br><br>
+          And I’ll never make you feel ignored again 😔➡️😄<br><br>
           You are my favorite person Aachal 💛<br>
           I love you so much ❤️
         </p>
-        <div style="font-size:32px; margin-top:14px;">💛💛💛</div>
-      `;
-    }
 
-    function moveNo(){
-      const btn = document.getElementById("noBtn");
-      const x = Math.random() * 220 - 110;
-      const y = Math.random() * 160 - 80;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
+        <div style="font-size:34px; margin-top:14px;">💛💛💛</div>
+      `;
     }
   </script>
 </body>
