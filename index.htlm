@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorry Bubu 💛</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #fff3a0, #ffd54f, #ffb300);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px;
+    }
+
+    .card{
+      background: rgba(255,255,255,0.95);
+      max-width: 520px;
+      width:100%;
+      padding: 32px;
+      border-radius: 22px;
+      text-align:center;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge{
+      display:inline-block;
+      background:#ffcc00;
+      color:#3b2f00;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    h1{
+      color:#d97706;
+      margin: 6px 0 12px;
+      font-size: 32px;
+    }
+
+    p{
+      font-size: 16px;
+      color:#333;
+      line-height:1.7;
+      margin: 0;
+    }
+
+    .heart{
+      font-size: 30px;
+      animation: pulse 1s infinite;
+      display:inline-block;
+      margin: 14px 0;
+    }
+
+    @keyframes pulse{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.15); }
+      100%{ transform: scale(1); }
+    }
+
+    .buttons{
+      margin-top: 22px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      padding: 12px 18px;
+      border:none;
+      border-radius: 14px;
+      cursor:pointer;
+      font-size: 16px;
+      transition: 0.2s ease;
+      font-weight: 600;
+      min-width: 140px;
+    }
+
+    .yes{
+      background:#f59e0b;
+      color:white;
+      box-shadow: 0 6px 14px rgba(245,158,11,0.35);
+    }
+
+    .yes:hover{
+      transform: scale(1.05);
+    }
+
+    .no{
+      background:#374151;
+      color:white;
+      position:relative;
+    }
+
+    .no:hover{
+      transform: scale(1.05);
+    }
+
+    .footer{
+      margin-top:18px;
+      font-size: 13px;
+      color:#555;
+    }
+
+    .tiny{
+      font-size: 12px;
+      color:#777;
+      margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" id="card">
+    <div class="badge">For my Bubu 💛</div>
+    <h1>Sorry Aachal 🥺</h1>
+
+    <p>
+      Hey <b>Aachal (Bubu)</b> 💛<br><br>
+      I know you were calling me and I didn’t pick up...<br>
+      I’m really sorry for that 😔<br><br>
+      I never ignore you on purpose.<br>
+      You mean a lot to me and your call is important to me always 💛
+    </p>
+
+    <div class="heart">💛</div>
+
+    <p>
+      Please forgive me Bubu?<br>
+      I promise I will not repeat it again 🙏✨
+    </p>
+
+    <div class="buttons">
+      <button class="yes" onclick="forgive()">Yes Bubu 💛</button>
+      <button class="no" id="noBtn" onmouseover="moveNo()">No 😠</button>
+    </div>
+
+    <div class="footer">
+      Made with love by Ravi 💌
+      <div class="tiny">Tip: Click “Yes Bubu” 😄</div>
+    </div>
+  </div>
+
+  <script>
+    function forgive(){
+      document.getElementById("card").innerHTML = `
+        <div class="badge">Best Girlfriend 💛</div>
+        <h1>Yayyy Bubu 😍💛</h1>
+        <p style="font-size:16px; line-height:1.7; color:#333;">
+          Thank you for forgiving me 🥺💛<br><br>
+          I promise from now I will pick your call fast 📞✨<br>
+          And I’ll give you extra attention today 😄<br><br>
+          You are my favorite person Aachal 💛<br>
+          I love you so much ❤️
+        </p>
+        <div style="font-size:32px; margin-top:14px;">💛💛💛</div>
+      `;
+    }
+
+    function moveNo(){
+      const btn = document.getElementById("noBtn");
+      const x = Math.random() * 220 - 110;
+      const y = Math.random() * 160 - 80;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  </script>
+</body>
+</html>
